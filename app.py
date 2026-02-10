@@ -67,6 +67,7 @@ def home():
                 <select id="food-type">
                     <option value="">선택해주세요</option>
                     <option value="korean">한식</option>
+                    <option value="snack">분식</option>
                     <option value="chinese">중식</option>
                     <option value="japanese">일식</option>
                     <option value="western">양식</option>
@@ -82,6 +83,15 @@ def home():
                 </select>
             </div>
             
+            <div class="question">
+                <label>맵기는 어느 정도로 할까요?</label>
+                <select id="spicy-level">
+                    <option value="mild">안 매워요</option>
+                    <option value="medium">보통</option>
+                    <option value="hot">매워요</option>
+                </select>
+            </div>
+
             <div class="question">
                 <label>예산은 얼마인가요? (원)</label>
                 <input type="number" id="budget" placeholder="예: 10000">
@@ -100,7 +110,8 @@ def home():
                 var foodType = document.getElementById('food-type').value;
                 var parking = document.getElementById('parking').value;
                 var budget = document.getElementById('budget').value;
-                
+                var spicy-level = document.getElementById('spicy-level).value;
+
                 var result = document.getElementById('result');
                 var recommendation = document.getElementById('recommendation');
                 
