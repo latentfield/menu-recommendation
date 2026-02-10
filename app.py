@@ -110,7 +110,7 @@ def home():
                 var foodType = document.getElementById('food-type').value;
                 var parking = document.getElementById('parking').value;
                 var budget = document.getElementById('budget').value;
-                var spicyLevel = document.getElementById('spicy-level).value;
+                var spicyLevel = document.getElementById('spicy-level').value;
 
                 var result = document.getElementById('result');
                 var recommendation = document.getElementById('recommendation');
@@ -122,7 +122,7 @@ def home():
                 
                 // 간단한 추천 로직 (나중에 개선할 예정)
                 var spicyOptions = {
-                    'mild : '안 매운 음식',
+                    'mild' : '안 매운 음식',
                     'medium': '보통 맵기',
                     'hot': '매운 음식'
                 };
