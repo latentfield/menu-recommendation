@@ -110,7 +110,7 @@ def home():
                 var foodType = document.getElementById('food-type').value;
                 var parking = document.getElementById('parking').value;
                 var budget = document.getElementById('budget').value;
-                var spicy-level = document.getElementById('spicy-level).value;
+                var spicyLevel = document.getElementById('spicy-level).value;
 
                 var result = document.getElementById('result');
                 var recommendation = document.getElementById('recommendation');
@@ -121,7 +121,14 @@ def home():
                 }
                 
                 // 간단한 추천 로직 (나중에 개선할 예정)
+                var spicyOptions = {
+                    'mild : '안 매운 음식',
+                    'medium': '보통 맵기',
+                    'hot': '매운 음식'
+                };
+
                 var message = foodType + ' 음식을 원하시고, ';
+                message += ', 맵기는 ' + spicyOptions[spicyLevel] + '이시고, ';
                 message += '주차는 ' + (parking === 'yes' ? '필요하시고' : '필요없으시고');
                 message += ', 예산은 ' + budget + '원이시군요!<br><br>';
                 message += '🎯 추천: 현재는 테스트 버전입니다. 곧 실제 식당을 추천해드릴게요!';
