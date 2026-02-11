@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 
 # 식당 데이터 (나중에 DB로 이동 예정)
 restaurants = [
