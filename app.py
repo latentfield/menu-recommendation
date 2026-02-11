@@ -188,17 +188,44 @@ def recommend():
     # 사용자 입력 받기
     data = request.get_json()
     food_type = data.get('foodType')
-    parking = data.get('parking')
-    budget = data.get('budget')
+    parking_needed = data.get('parking') == 'yes'
+    budget = int(data.get('budget'))
     spicy_level = data.get('spicyLevel')
+    
+    # 조건에 맞는 식당 필터링
+    matched_restaurants = []
+    
+    for restaurant in restaurants:
+        # TODO: 여기에 필터링 조건 작성
+        if restaurant['type'] != food_type:
+            continue
+        
+        if parking_needed and not restaurant['parking']:
+            continue
 
-    # TODO : 여기에 필터링 로직 (추후에)
-    # 일단 테스트용 응답
+        if restaurant['price'] > budget:
+            continue
 
-    return jsonify({
-        'success': True,
-        'message': f'{food_type} 음식, 예산 {budget}원으로 검색했습니다!'
-    })
+        if restaurant['spicy'] != spicy_level:
+            continue
+        
+        matched_restaurants.append(restaurant)
+    
+    # 결과 반환
+    if matched_restaurants:
+        result_text = '<h3>🎯 추천 식당</h3>'
+        for r in matched_restaurants:
+            result_text += f'<p><strong>{r["name"]}</strong> - {r["price"]}원</p>'
+        
+        return jsonify({
+            'success': True,
+            'message': result_text
+        })
+    else:
+        return jsonify({
+            'success': False,
+            'message': '조건에 맞는 식당이 없습니다. 😢'
+        })
 
 
 if __name__ == '__main__':
