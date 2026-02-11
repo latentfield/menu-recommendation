@@ -1,5 +1,44 @@
 from flask import Flask
 
+# 식당 데이터 (나중에 DB로 이동 예정)
+restaurants = [
+    {
+        'name': '김밥천국',
+        'type': 'snack',
+        'parking': False,
+        'price': 5000,
+        'spicy': 'mild'
+    },
+    {
+        'name': '청기와 한정식',
+        'type': 'korean',
+        'parking': True,
+        'price': 15000,
+        'spicy': 'medium'
+    },
+    {
+        'name': '짬뽕지존',
+        'type': 'chinese',
+        'parking': False,
+        'price': 9000,
+        'spicy': 'hot'
+    },
+    {
+        'name': '스시로',
+        'type': 'japanese',
+        'parking': True,
+        'price': 18000,
+        'spicy': 'mild'
+    },
+    {
+        'name': '파스타하우스',
+        'type': 'western',
+        'parking': True,
+        'price': 13000,
+        'spicy': 'mild'
+    }
+]
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -106,40 +145,61 @@ def home():
         </div>
         
         <script>
-            function recommend() {
-                var foodType = document.getElementById('food-type').value;
-                var parking = document.getElementById('parking').value;
-                var budget = document.getElementById('budget').value;
-                var spicyLevel = document.getElementById('spicy-level').value;
-
-                var result = document.getElementById('result');
-                var recommendation = document.getElementById('recommendation');
-                
-                if (!foodType || !parking || !budget) {
-                    alert('모든 항목을 선택해주세요!');
-                    return;
-                }
-                
-                // 간단한 추천 로직 (나중에 개선할 예정)
-                var spicyOptions = {
-                    'mild' : '안 매운 음식',
-                    'medium': '보통 맵기',
-                    'hot': '매운 음식'
-                };
-
-                var message = foodType + ' 음식을 원하시고, ';
-                message += ', 맵기는 ' + spicyOptions[spicyLevel] + '이시고, ';
-                message += '주차는 ' + (parking === 'yes' ? '필요하시고' : '필요없으시고');
-                message += ', 예산은 ' + budget + '원이시군요!<br><br>';
-                message += '🎯 추천: 현재는 테스트 버전입니다. 곧 실제 식당을 추천해드릴게요!';
-                
-                recommendation.innerHTML = message;
-                result.style.display = 'block';
-            }
-        </script>
+    function recommend() {
+        var foodType = document.getElementById('food-type').value;
+        var parking = document.getElementById('parking').value;
+        var budget = document.getElementById('budget').value;
+        var spicyLevel = document.getElementById('spicy-level').value;
+        
+        if (!foodType || !parking || !budget || !spicyLevel) {
+            alert('모든 항목을 선택해주세요!');
+            return;
+        }
+        
+        // Flask 서버로 데이터 전송
+        fetch('/recommend', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                foodType: foodType,
+                parking: parking,
+                budget: parseInt(budget),
+                spicyLevel: spicyLevel
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            var result = document.getElementById('result');
+            var recommendation = document.getElementById('recommendation');
+            
+            recommendation.innerHTML = data.message;
+            result.style.display = 'block';
+        });
+    }
+</script>
     </body>
     </html>
     """
+
+@app.route('/recommend', methods=['POST'])
+def recommend():
+    # 사용자 입력 받기
+    data = request.get_json()
+    food_type = data.get('foodType')
+    parking = data.get('parking')
+    budget = data.get('budget')
+    spicy_level = data.get('spicyLevel')
+
+    # TODO : 여기에 필터링 로직 (추후에)
+    # 일단 테스트용 응답
+
+    return jsonify({
+        'success': True,
+        'message': f'{food_type} 음식, 예산 {budget}원으로 검색했습니다!'
+    })
+
 
 if __name__ == '__main__':
     app.run(debug=True)
